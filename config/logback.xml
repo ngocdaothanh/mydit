@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Doc: http://logback.qos.ch/manual/configuration.html -->
+<!-- This config file will be automatically reloaded every minute -->
+<configuration scan="true" scanPeriod="60 seconds">
+  <!-- Set to TRACE to see all replication events -->
+
+  <!-- Log to console in development mode -->
+  <if condition='!property("mydit.mode").contains("production")'>
+    <then>
+      <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+          <pattern>[%level] %m%n</pattern>
+        </encoder>
+      </appender>
+
+      <root level="TRACE">
+        <appender-ref ref="CONSOLE"/>
+      </root>
+    </then>
+  </if>
+
+  <!-- Log to file in production mode -->
+  <if condition='property("mydit.mode").contains("production")'>
+    <then>
+      <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/mydit.log</file>
+        <encoder>
+          <pattern>[%level] [%d{yy-MM-dd HH:mm:ss}] %c{1}: %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>./log/mydit.log.%d{yy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+      </appender>
+
+      <root level="INFO">
+        <appender-ref ref="FILE"/>
+      </root>
+    </then>
+  </if>
+</configuration>
