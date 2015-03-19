@@ -83,3 +83,7 @@ To config JVM memory, see `script/start` and `script/start.bat`.
 
 When the program runs, log will be output to `log/mydit.log`. The log is
 rotated daily by default. See `config/logback.xml`.
+
+## Similar tools
+
+* [Tungsten Replicator](https://code.google.com/p/tungsten-replicator/)
