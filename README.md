@@ -1,5 +1,8 @@
 Mydit: MySQL to MongoDB Replicator
 
+You can use it to implement transaction feature for programs using MongoDB:
+Write transaction data to MySQL, then read from MongoDB.
+
 [Packaged directory](https://github.com/ngocdaothanh/mydit/releases)
 looks like this:
 
