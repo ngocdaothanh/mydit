@@ -1,6 +1,7 @@
 Mydit: MySQL to MongoDB Replicator
 
-Packaged directory looks like this:
+[Packaged directory](https://github.com/ngocdaothanh/mydit/releases)
+looks like this:
 
 ```
 config/
@@ -60,7 +61,7 @@ Don't forget to set `server-id`, otherwise slaves cannot connect.
 * When you change MySQL database schema, you need to do apply the change at
   MongoDB side yourself.
 
-### Config
+## Config
 
 To config MySQL and MongoDB, see `config/application.conf`.
 
@@ -75,7 +76,7 @@ password = "${MYSQL_PASSWORD}"
 
 To config JVM memory, see `script/start` and `script/start.bat`.
 
-### Log
+## Log
 
 When the program runs, log will be output to `log/mydit.log`. The log is
 rotated daily by default. See `config/logback.xml`.
