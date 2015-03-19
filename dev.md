@@ -1,20 +1,22 @@
+You need [SBT](http://www.scala-sbt.org/) to build.
+
 ## Run in development mode
 
 ```
-sbt/sbt run
+sbt run
 ```
 
 To create Eclipse or IntelliJ project:
 
 ```
-sbt/sbt eclipse
-sbt/sbt gen-idea
+sbt eclipse
+sbt gen-idea
 ```
 
 ## Run in production mode
 
 ```
-sbt/sbt xitrum-package
+sbt xitrum-package
 ```
 
 Directory `target/xitrum` will be created:
