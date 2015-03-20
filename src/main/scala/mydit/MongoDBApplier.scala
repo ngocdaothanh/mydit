@@ -5,7 +5,6 @@ import java.math.BigDecimal
 import java.util.BitSet
 
 import scala.collection.JavaConverters._
-import scala.util.control.NonFatal
 
 import com.github.shyiko.mysql.binlog.event.DeleteRowsEventData
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData
@@ -65,9 +64,6 @@ class MongoDBApplier(uri: String, binlogDb: String, binlogCollName: String, enum
           // https://github.com/ngocdaothanh/mydit/issues/2
           val fields = new BasicDBObject("_id", 1)
           if (coll.findOne(obj, fields, ReadPreference.primary) == null) throw dup
-
-        case NonFatal(e) =>
-          throw e
       }
     }
     binlogNextPosition(nextPosition)
