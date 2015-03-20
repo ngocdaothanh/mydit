@@ -84,6 +84,38 @@ To config JVM memory, see `script/start` and `script/start.bat`.
 When the program runs, log will be output to `log/mydit.log`. The log is
 rotated daily by default. See `config/logback.xml`.
 
+## Start with Supervisor
+
+[Supervisor](http://supervisord.org/) is a very easy to use tool to start
+program at OS boot and restart program automatically when it stops abnormally.
+
+See [Ubuntu tutorial](https://serversforhackers.com/monitoring-processes-with-supervisord)
+
+`/etc/supervisor/conf.d/mydit.conf` example:
+
+```
+[program:mydit]
+command=/home/ubuntu/opt/mydit-1.0/script/start
+directory=/home/ubuntu/opt/mydit-1.0
+autostart=true
+autorestart=true
+startretries=3
+stderr_logfile=/home/ubuntu/opt/mydit-1.1/supervisord.err.log
+stdout_logfile=/home/ubuntu/opt/mydit-1.1/supervisord.out.log
+user=ubuntu
+```
+
+Command examples:
+
+```
+sudo supervisorctl reread
+sudo supervisorctl update
+
+sudo supervisorctl status mydit
+sudo supervisorctl stop mydit
+sudo supervisorctl start mydit
+```
+
 ## Similar tools
 
 * [Tungsten Replicator](https://code.google.com/p/tungsten-replicator/)
