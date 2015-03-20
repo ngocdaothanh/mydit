@@ -36,6 +36,8 @@ class Rep(config: Config) extends RepEvent.Listener {
   }
 
   private def processEvent(event: RepEvent.Event) {
+    val lastQSize = failedEventQ.size
+
     // Replicate things in the queue first
     var ok = true
     while (ok && failedEventQ.nonEmpty) {
@@ -49,16 +51,19 @@ class Rep(config: Config) extends RepEvent.Listener {
 
     if (!ok) failedEventQ.enqueue(event)
 
-    val qSize = failedEventQ.size
-    if (qSize > 0) {
-      Log.info("Failed replication event queue size: {}", qSize)
-      if (qSize > config.maxFailedEventQueueSize) {
+    val newQSize = failedEventQ.size
+    if (newQSize > 0) {
+      Log.info("Failed replication event queue size: {}", newQSize)
+      if (newQSize > config.maxFailedEventQueueSize) {
         Log.error(
           "Replicator program now exits because the failed replication event queue size exceeds {} (see config/application.conf)",
           config.maxFailedEventQueueSize
         )
         System.exit(-1)
       }
+    } else if (lastQSize > 0) {
+      // newQSize is now 0, congratulations!
+      Log.info("Failed replication event queue is now empty, before: {}", lastQSize)
     }
   }
 
