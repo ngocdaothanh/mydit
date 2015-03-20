@@ -1,5 +1,8 @@
 package mydit
 
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 import scala.collection.mutable.Queue
 import scala.util.control.NonFatal
 
@@ -9,7 +12,8 @@ class Rep(config: Config) extends RepEvent.Listener {
     config.enumToString
   )
 
-  private val failedEventQ = Queue[RepEvent.Event]()
+  private val failedEventQ  = Queue[RepEvent.Event]()
+  private val singleThreadE = Executors.newSingleThreadExecutor()
 
   val my = new MySQLExtractor(
     config.myHost, config.myPort, config.myUsername, config.myPassword, config.myOnly,
@@ -20,8 +24,18 @@ class Rep(config: Config) extends RepEvent.Listener {
 
   //--------------------------------------------------------------------------
 
-  /** This method is synchronized because the replication must be in order. */
-  override def onEvent(event: RepEvent.Event): Unit = synchronized {
+  override def onEvent(event: RepEvent.Event) {
+    // Queue the event to be processed one by one because the replication
+    // must be in order. For better performance, we run in a separate thread
+    // to avoid blocking the MySQL binlog event reader thread.
+    singleThreadE.execute(new Runnable {
+      override def run() {
+        processEvent(event)
+      }
+    })
+  }
+
+  private def processEvent(event: RepEvent.Event) {
     // Replicate things in the queue first
     var ok = true
     while (ok && failedEventQ.nonEmpty) {
@@ -48,7 +62,7 @@ class Rep(config: Config) extends RepEvent.Listener {
     }
   }
 
-  /** @return false on failure */
+  /** @return false on any Exception */
   private def replicate(event: RepEvent.Event): Boolean = {
     try {
       event match {

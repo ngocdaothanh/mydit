@@ -16,6 +16,14 @@ object RepEvent {
   case class Remove(nextPosition: Long, ti: TableInfo, data: DeleteRowsEventData) extends Event
 
   trait Listener {
+    /**
+     * This method is run on the MySQL binlog event reader thread. For
+     * better performance, it should avoid blocking the reader thread by
+     * processing the event on a separate thread, if necessary.
+     *
+     * How EventListener#onEvent is executed:
+     * https://github.com/shyiko/mysql-binlog-connector-java/issues/32
+     */
     def onEvent(event: Event)
   }
 }
