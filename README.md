@@ -1,9 +1,9 @@
-Mydit: MySQL to MongoDB Replicator
+Mydit: MySQL to MongoDB data replicator
 
 You can use it to implement transaction feature for programs using MongoDB:
 Write transaction data to MySQL, then read from MongoDB.
 
-[Packaged directory](https://github.com/ngocdaothanh/mydit/releases)
+[The download](https://github.com/ngocdaothanh/mydit/releases)
 looks like this:
 
 ```
@@ -48,8 +48,8 @@ Error handling:
 
 See [How to Set Up Replication](http://dev.mysql.com/doc/refman/5.6/en/replication-howto.html).
 
-MySQL's binlog_format must be set to ROW. Note that RDS MySQL's binlog_format
-is set to MIXED by default. If you use RDS you need to create a parameter group
+MySQL's `binlog_format` must be set to `ROW`. Note that RDS MySQL's `binlog_format`
+is set to `MIXED` by default. If you use RDS you need to create a parameter group
 and set it to the MySQL instance.
 
 The user to connect to the MySQL server must have privileges `REPLICATION SLAVE`
@@ -66,7 +66,7 @@ Don't forget to set `server-id`, otherwise slaves cannot connect.
 
 ## Config
 
-To config MySQL and MongoDB, see `config/application.conf`.
+See `config/application.conf`.
 
 If you want to set, for example, MySQL password from system environment variable,
 modify `config/application.conf` like this:
