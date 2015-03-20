@@ -25,7 +25,7 @@ script/start
 
 ## How Mydit works
 
-MySQL ---> Mydit ---> MongoDB
+**MySQL ---> Mydit ---> MongoDB**
 
 [mysql-binlog-connector-java](https://github.com/shyiko/mysql-binlog-connector-java)
 is used to get a stream of row events from MySQL.
@@ -89,7 +89,7 @@ rotated daily by default. See `config/logback.xml`.
 [Supervisor](http://supervisord.org/) is a very easy to use tool to start
 program at OS boot and restart program automatically when it stops abnormally.
 
-See [Ubuntu tutorial](https://serversforhackers.com/monitoring-processes-with-supervisord)
+See [Ubuntu tutorial](https://serversforhackers.com/monitoring-processes-with-supervisord).
 
 `/etc/supervisor/conf.d/mydit.conf` example:
 
