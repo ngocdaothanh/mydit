@@ -1,5 +1,8 @@
 1.2:
 
+* [#2](https://github.com/ngocdaothanh/mydit/issues/2)
+  Insert: Stop replication on DuplicateKeyException only when the doc to be
+  inserted is different from the doc in DB
 * [#3](https://github.com/ngocdaothanh/mydit/issues/3)
   Log INFO when failed replication event queue changes from nonempty to empty
 
