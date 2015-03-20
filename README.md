@@ -50,7 +50,8 @@ See [How to Set Up Replication](http://dev.mysql.com/doc/refman/5.6/en/replicati
 
 MySQL's `binlog_format` must be set to `ROW`. Note that RDS MySQL's `binlog_format`
 is set to `MIXED` by default. If you use RDS you need to create a parameter group
-and set it to the MySQL instance.
+and set it to the MySQL instance. You may need to restart the instance for the
+setting in the parameter group to take effect.
 
 The user to connect to the MySQL server must have privileges `REPLICATION SLAVE`
 and `REPLICATION CLIENT`.
