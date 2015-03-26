@@ -33,7 +33,7 @@ object ColInfo {
     while (cols.next()) {
       val name          = cols.getString("COLUMN_NAME")
       val typeLowerCase = cols.getString("TYPE_NAME").toLowerCase
-      if (typeLowerCase.equals("enum")) {
+      if (typeLowerCase == "enum") {
         val enumValues = getEnumValues(con, table, name)
         buf.append(ColInfo(name, typeLowerCase, enumValues))
       } else {

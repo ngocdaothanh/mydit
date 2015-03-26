@@ -16,8 +16,8 @@ object TableInfo {
 case class TableInfo(data: TableMapEventData, cols: IndexedSeq[ColInfo]) {
   def sameData(data: TableMapEventData): Boolean = {
                   this.data.getTableId           == data.getTableId &&
-                  this.data.getDatabase     .equals(data.getDatabase) &&
-                  this.data.getTable        .equals(data.getTable) &&
+                  this.data.getDatabase          == data.getDatabase &&
+                  this.data.getTable             == data.getTable &&
     Arrays.equals(this.data.getColumnTypes,         data.getColumnTypes) &&
     Arrays.equals(this.data.getColumnMetadata,      data.getColumnMetadata) &&
                   this.data.getColumnNullability != data.getColumnNullability

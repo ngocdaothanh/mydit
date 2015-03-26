@@ -2,6 +2,8 @@
 
 * [#4](https://github.com/ngocdaothanh/mydit/issues/4)
   Optimize: Don't get column info again when not needed
+* [#5](https://github.com/ngocdaothanh/mydit/issues/5)
+  Convert MySQL text to MongoDB UTF-8 String
 
 1.2:
 
