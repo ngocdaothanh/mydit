@@ -4,6 +4,8 @@
   Optimize: Don't get column info again when not needed
 * [#5](https://github.com/ngocdaothanh/mydit/issues/5)
   Convert MySQL text to MongoDB UTF-8 String
+* [#6](https://github.com/ngocdaothanh/mydit/issues/6)
+  Update Logback from 1.1.2 to 1.1.3
 
 1.2:
 

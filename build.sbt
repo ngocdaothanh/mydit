@@ -1,6 +1,6 @@
 organization := "tv.cntt"
 name         := "mydit"
-version      := "1.2-SNAPSHOT"
+version      := "1.3-SNAPSHOT"
 
 scalaVersion := "2.11.6"
 
@@ -11,7 +11,7 @@ javacOptions  ++= Seq("-source", "1.6", "-target", "1.6")
 
 // jul-to-slf4j: mysql-binlog-connector-java logs to JUL
 // janino:       for writing condition in logback.xml
-libraryDependencies += "ch.qos.logback"      % "logback-classic"   % "1.1.2"
+libraryDependencies += "ch.qos.logback"      % "logback-classic"   % "1.1.3"
 libraryDependencies += "org.slf4j"           % "jul-to-slf4j"      % "1.7.10"
 libraryDependencies += "org.codehaus.janino" % "janino"            % "2.7.8"
 
