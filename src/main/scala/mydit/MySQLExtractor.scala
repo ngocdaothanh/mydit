@@ -66,8 +66,12 @@ class MySQLExtractor(
     }
   }
 
-  def start() {
+  def connect() {
     client.connect()
+  }
+
+  def disconnect() {
+    client.disconnect()
   }
 
   //--------------------------------------------------------------------------

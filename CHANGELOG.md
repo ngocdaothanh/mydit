@@ -4,6 +4,8 @@
   Optimize: Don't get column info again when not needed
 * [#5](https://github.com/ngocdaothanh/mydit/issues/5)
   Convert MySQL text to MongoDB UTF-8 String
+* [#8](https://github.com/ngocdaothanh/mydit/issues/8)
+  Fix bug: Cannot exit when the number of errors exceeds the configured threshold
 * [#6](https://github.com/ngocdaothanh/mydit/issues/6)
   Update Logback from 1.1.2 to 1.1.3
 * [#7](https://github.com/ngocdaothanh/mydit/issues/7)
