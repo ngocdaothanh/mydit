@@ -6,6 +6,8 @@
   Convert MySQL text to MongoDB UTF-8 String
 * [#6](https://github.com/ngocdaothanh/mydit/issues/6)
   Update Logback from 1.1.2 to 1.1.3
+* [#7](https://github.com/ngocdaothanh/mydit/issues/7)
+  Update mysql-connector-java from 5.1.34 to 5.1.35
 
 1.2:
 
