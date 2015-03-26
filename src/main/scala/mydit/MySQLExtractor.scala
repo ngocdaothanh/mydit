@@ -27,6 +27,8 @@ class MySQLExtractor(
 
   client.registerEventListener(new BinaryLogClient.EventListener {
     override def onEvent(event: Event) {
+      // client will automatically catch exception (if any) and log it out
+
       Log.trace(event.toString)
 
       event.getData.asInstanceOf[EventData] match {
@@ -94,9 +96,18 @@ class MySQLExtractor(
     val db = data.getDatabase
     if (only != null && !only.contains(db)) return
 
-    val table = data.getTable
-    val cols = ColInfo.get(host, port, username, password, db, table)
-    tablesById = tablesById.updated(data.getTableId, TableInfo(db, table, cols))
+    val tableId = data.getTableId
+    tablesById.get(tableId) match {
+      case None =>
+        val tableInfo = TableInfo.get(data, host, port, username, password)
+        tablesById = tablesById.updated(tableId, tableInfo)
+
+      case Some(existingTableInfo) =>
+        if (!existingTableInfo.sameData(data)) {
+          val tableInfo = TableInfo.get(data, host, port, username, password)
+          tablesById = tablesById.updated(tableId, tableInfo)
+        }
+    }
   }
 
   //--------------------------------------------------------------------------
@@ -138,8 +149,8 @@ class MySQLExtractor(
   }
 
   /** Calls onBinlogNextPosition of the listeners if the DB doesn't need replication. */
-  private def doesDbNeedRep(ti: Option[TableInfo], nextPosition: Long): Boolean = {
-    if (ti.isDefined && (only.isEmpty || only.contains(ti.get.db))) return true
+  private def doesDbNeedRep(tio: Option[TableInfo], nextPosition: Long): Boolean = {
+    if (tio.isDefined && (only.isEmpty || only.contains(tio.get.data.getDatabase))) return true
 
     synchronized {
       for (listener <- listeners) {

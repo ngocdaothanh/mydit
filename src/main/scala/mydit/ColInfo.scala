@@ -2,9 +2,10 @@ package mydit
 
 import java.sql.Connection
 import java.sql.DriverManager
+import scala.collection.mutable.ArrayBuffer
 
 /** enumValues: Only used when column type is "enum". */
-case class ColInfo(name: String, typeLowerCase: String, enumValues: Seq[String])
+case class ColInfo(name: String, typeLowerCase: String, enumValues: IndexedSeq[String])
 
 /**
  * mysql-binlog-connector-java doesn't provide column names of tables.
@@ -16,49 +17,40 @@ case class ColInfo(name: String, typeLowerCase: String, enumValues: Seq[String])
 object ColInfo {
   Class.forName("com.mysql.jdbc.Driver")
 
-  private var consByDBName = Map[String, Connection]()
-
   def get(
     host: String, port: Int, username: String, password: String, db: String,
     table: String
-  ): Seq[ColInfo] = synchronized {
-    val con = consByDBName.get(db) match {
-      case None =>
-        val url = "jdbc:mysql://" + host + ":" + port + "/" + db + "?autoReconnect=true"
-        val con = DriverManager.getConnection(url, username, password)
-        consByDBName = consByDBName.updated(db, con)
-        con
-
-      case Some(con) =>
-        con
-    }
-
-    get(con, table)
-  }
-
-  def get(con: Connection, table: String): Seq[ColInfo] = {
+  ): IndexedSeq[ColInfo] = {
     // http://www.java2s.com/Code/Java/Database-SQL-JDBC/GetColumnName.htm
+    // http://docs.oracle.com/javase/6/docs/api/java/sql/DatabaseMetaData.html#getColumns(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 
+    val url  = "jdbc:mysql://" + host + ":" + port + "/" + db
+    val con  = DriverManager.getConnection(url, username, password)
     val meta = con.getMetaData
     val cols = meta.getColumns(null, null, table, null)
-    var ret  = Seq[ColInfo]()
+    val buf  = ArrayBuffer[ColInfo]()
 
     while (cols.next()) {
       val name          = cols.getString("COLUMN_NAME")
       val typeLowerCase = cols.getString("TYPE_NAME").toLowerCase
       if (typeLowerCase.equals("enum")) {
         val enumValues = getEnumValues(con, table, name)
-        ret = ret :+ ColInfo(name, typeLowerCase, enumValues)
+        buf.append(ColInfo(name, typeLowerCase, enumValues))
       } else {
-        ret = ret :+ ColInfo(name, typeLowerCase, Seq.empty)
+        buf.append(ColInfo(name, typeLowerCase, IndexedSeq.empty))
       }
     }
 
+    val ret = buf.toIndexedSeq
+
     cols.close()
+    con.close()
+
+    Log.trace("{}.{}: {}", db, table, ret)
     ret
   }
 
-  private def getEnumValues(con: Connection, table: String, enumCol: String): Seq[String] = {
+  private def getEnumValues(con: Connection, table: String, enumCol: String): IndexedSeq[String] = {
     val stmt = con.createStatement()
     val sql  = "SHOW COLUMNS FROM " + table + " LIKE '" + enumCol + "'"
     val rs   = stmt.executeQuery(sql)
@@ -67,18 +59,19 @@ object ColInfo {
     val enm = rs.getString("Type")  // Ex: "enum('pending','verified')"
     if (!enm.startsWith("enum(")) throw new Exception(table + "." + enumCol + " is not an enum")
 
-    var ret = Seq[String]()
-
     val valueString  = enm.substring("enum(".length(), enm.length() - 1)
     val quotedValues = valueString.split(",")
-    for (quotedValue <- quotedValues) {
+    val ret          = new Array[String](quotedValues.size)
+    for (i <- 0 until quotedValues.size) {
+      val quotedValue       = quotedValues(i)
       val trimedQuotedValue = quotedValue.trim()
       val value             = trimedQuotedValue.substring(1, trimedQuotedValue.length() - 1)
-      ret = ret :+ value
+      ret(i)                = value
     }
 
     rs.close()
     stmt.close()
+
     ret
   }
 }

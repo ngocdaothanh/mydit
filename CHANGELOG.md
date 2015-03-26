@@ -1,3 +1,8 @@
+1.3:
+
+* [#4](https://github.com/ngocdaothanh/mydit/issues/4)
+  Optimize: Don't get column info again when not needed
+
 1.2:
 
 * [#2](https://github.com/ngocdaothanh/mydit/issues/2)

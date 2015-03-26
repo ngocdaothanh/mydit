@@ -78,18 +78,18 @@ class Rep(config: Config) extends RepEvent.Listener {
           mo.binlogNextPosition(e.position)
 
         case e: RepEvent.Insert =>
-          mo.insert(e.nextPosition, e.ti.db, e.ti.table, e.ti.cols, e.data)
+          mo.insert(e.nextPosition, e.ti.data.getDatabase, e.ti.data.getTable, e.ti.cols, e.data)
 
         case e: RepEvent.Update =>
-          mo.update(e.nextPosition, e.ti.db, e.ti.table, e.ti.cols, e.data)
+          mo.update(e.nextPosition, e.ti.data.getDatabase, e.ti.data.getTable, e.ti.cols, e.data)
 
         case e: RepEvent.Remove =>
-          mo.remove(e.nextPosition, e.ti.db, e.ti.table, e.ti.cols, e.data)
+          mo.remove(e.nextPosition, e.ti.data.getDatabase, e.ti.data.getTable, e.ti.cols, e.data)
       }
       true
     } catch {
       case NonFatal(e) =>
-        Log.warn("Could not replicate to MongoDB", e)
+        Log.warn("Could not replicate to MongoDB, event: " + event, e)
         false
     }
   }
