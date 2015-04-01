@@ -96,7 +96,7 @@ class MongoDBApplier(uri: String, binlogDb: String, binlogCollName: String, enum
     val ret = new BasicDBObject
     for (i <- 0 until cols.size) {
       if (includedColumns.get(i)) {
-        val ci = cols(i)
+        val ci           = cols(i)
         val mongoDBValue = mySQLValueToMongoDBValue(ci, mySQLValues(i))
         ret.put(ci.name, mongoDBValue)
       }
@@ -107,8 +107,8 @@ class MongoDBApplier(uri: String, binlogDb: String, binlogCollName: String, enum
   private def mySQLValueToMongoDBValue(ci: ColInfo, value: Serializable): Serializable = {
     // Convert MySQL enum to MongoDB String
     if (enumToString && ci.typeLowerCase == "enum") {
-      val id = value.asInstanceOf[Int]  // Starts from 1
-      return ci.enumValues(id - 1)
+      val id = value.asInstanceOf[Int]  // Starts from 1; 0 if the enum is null
+      return if (id <= 0) null else ci.enumValues(id - 1)
     }
 
     // MongoDB doesn't support BigDecimal, convert it to Double
