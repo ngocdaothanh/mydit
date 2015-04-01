@@ -1,3 +1,10 @@
+1.4:
+
+* [#9](https://github.com/ngocdaothanh/mydit/issues/9)
+  Fix ArrayIndexOutOfBoundsException when enum value is null
+* [#10](https://github.com/ngocdaothanh/mydit/issues/10)
+  Update mysql-binlog-connector-java from 0.1.2 to 0.1.3
+
 1.3:
 
 * [#4](https://github.com/ngocdaothanh/mydit/issues/4)
