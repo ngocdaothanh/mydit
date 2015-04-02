@@ -1,3 +1,8 @@
+1.5:
+
+* [#12](https://github.com/ngocdaothanh/mydit/issues/12)
+  Exit if binlog filename/position is too old
+
 1.4:
 
 * [#9](https://github.com/ngocdaothanh/mydit/issues/9)

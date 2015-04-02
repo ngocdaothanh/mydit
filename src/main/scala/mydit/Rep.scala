@@ -20,7 +20,7 @@ class Rep(config: Config) extends RepEvent.Listener {
     mo.binlogGetPosition
   )
   my.addListener(this)
-  my.connect()
+  my.connectKeepAlive()
 
   //--------------------------------------------------------------------------
 
@@ -59,11 +59,7 @@ class Rep(config: Config) extends RepEvent.Listener {
           "Replicator program now exits because the failed replication event queue size exceeds {} (see config/application.conf)",
           config.maxFailedEventQueueSize
         )
-
-        // Need to disconnect before exiting, otherwise we can't exit because
-        // there are still running threads
-        my.disconnect()
-        System.exit(-1)
+        my.disconnectAndExit()
       }
     } else if (lastQSize > 0) {
       // newQSize is now 0, congratulations!
