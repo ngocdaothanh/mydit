@@ -142,7 +142,10 @@ class MySQLExtractor(
           if (delaySecs > 0) Thread.sleep(delaySecs * 1000)
           client.connect()
         } catch {
-          case NonFatal(e) => Log.error("Error", e)
+          case NonFatal(e) =>
+            val delay = if (delaySecs > 0) delaySecs else RECONNECT_DELAY_SECS
+            Log.error(s"Could not connect, will reconnect in $delay seconds", e)
+            connectInNewThread(delay)
         }
       }
     }.start()

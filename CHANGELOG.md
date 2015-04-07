@@ -1,3 +1,8 @@
+1.6:
+
+* [#13](https://github.com/ngocdaothanh/mydit/issues/13)
+  MySQLExtractor: Reconnect after some time on connection failure
+
 1.5:
 
 * [#12](https://github.com/ngocdaothanh/mydit/issues/12)
