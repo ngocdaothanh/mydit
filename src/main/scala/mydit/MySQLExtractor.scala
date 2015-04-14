@@ -21,7 +21,19 @@ object MySQLExtractor {
   private final val RECONNECT_DELAY_SECS = 5
 }
 
-/** @param only empty means all DBs should be replicated */
+/**
+ * Error handling:
+ *
+ * When there's problem, it will be logged.
+ *
+ * If MySQLExtractor can't connect to MySQL, it will automatically retry every
+ * 5 seconds.
+ *
+ * If MySQLExtractor can't connect to MySQL because the specified binlog file
+ * name and position is too old, the replicator process will exit.
+ *
+ * @param only Empty means all DBs should be replicated
+ */
 class MySQLExtractor(
   host: String, port: Int, username: String, password: String, only: Seq[String],
   binlogFilename_Position: Option[(String, Long)]

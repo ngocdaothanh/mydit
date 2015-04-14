@@ -6,6 +6,15 @@ import java.util.concurrent.Executors
 import scala.collection.mutable.Queue
 import scala.util.control.NonFatal
 
+/**
+ * Error handling:
+ *
+ * When there's problem, it will be logged.
+ *
+ * When there's problem replicating to MongoDB, the replicator will queue the
+ * data and try to replicate it later. If the queue size exceeds the configured
+ * threshold, the replicator process will exit.
+ */
 class Rep(config: Config) extends RepEvent.Listener {
   private val mo = new MongoDBApplier(
     config.mongoUri, config.mongoBinlogDb, config.mongoBinlogColl,
