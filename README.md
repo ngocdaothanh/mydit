@@ -58,6 +58,17 @@ and `REPLICATION CLIENT`.
 
 Don't forget to set `server-id`, otherwise slaves cannot connect.
 
+Typically, my.cnf should look like this:
+
+```
+[mysqld]
+server-id        = 1
+binlog_format    = row
+log_bin          = mysql-bin.log
+expire_logs_days = 10
+max_binlog_size  = 100M
+```
+
 ## Things Mydit doesn't do
 
 * If there are indexes in your MySQL databases, you have to manually create
