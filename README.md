@@ -128,6 +128,20 @@ sudo supervisorctl stop mydit
 sudo supervisorctl start mydit
 ```
 
+## Bootstrap or rebootstrap MongoDB from existing MySQL data
+
+There are two scenarios:
+
+* MongoDB is empty and you want to populate it with existing MySQL data.
+* Replication binlog position is too old and MySQL has deleted the old binlog file.
+
+To make MongoDB data to be updated to the latest MySQL data, you can do like this:
+
+1. Alter MySQL tables to include a dummy additional field.
+2. Update MySQL tables to set value to that field. This will force all rows in
+   the tables to be replicated to MongoDB.
+3. Delete the field in both MySQL and MongoDB.
+
 ## Similar tools
 
 * [Tungsten Replicator](https://code.google.com/p/tungsten-replicator/)
