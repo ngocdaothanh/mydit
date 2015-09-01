@@ -145,3 +145,4 @@ To make MongoDB data to be updated to the latest MySQL data, you can do like thi
 ## Similar tools
 
 * [Tungsten Replicator](https://code.google.com/p/tungsten-replicator/)
+* [Bottled Water for PostgreSQL](https://github.com/confluentinc/bottledwater-pg)
