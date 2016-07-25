@@ -6,12 +6,13 @@ You need [SBT](http://www.scala-sbt.org/) to build.
 sbt run
 ```
 
-To create Eclipse or IntelliJ project:
+To create Eclipse project:
 
 ```
 sbt eclipse
-sbt gen-idea
 ```
+
+For IntelliJ, simply install its Scala plugin and open the project.
 
 ## Run in production mode
 
