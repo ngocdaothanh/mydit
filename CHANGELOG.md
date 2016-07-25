@@ -1,3 +1,9 @@
+Next version:
+
+* [#14](https://github.com/ngocdaothanh/mydit/issues/14)
+  Update mysql-binlog-connector-java from 0.1.3 to 0.3.2
+* Update other dependency libraries
+
 1.6:
 
 * [#13](https://github.com/ngocdaothanh/mydit/issues/13)

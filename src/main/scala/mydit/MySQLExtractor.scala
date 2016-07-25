@@ -14,6 +14,7 @@ import com.github.shyiko.mysql.binlog.event.RotateEventData
 import com.github.shyiko.mysql.binlog.event.TableMapEventData
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData
+import com.github.shyiko.mysql.binlog.network.ServerException
 
 // https://github.com/shyiko/rook/blob/master/rook-source-mysql/src/main/java/com/github/shyiko/rook/source/mysql/MySQLReplicationStream.java
 
@@ -95,15 +96,22 @@ class MySQLExtractor(
       private var shouldReconnect = true
 
       override def onCommunicationFailure(client: BinaryLogClient, e: Exception) {
-        if (e.getMessage == "1236 - Could not find first log file name in binary log index file") {
-          Log.error(
-            "Binlog {}/{} is no longer available on the master; need to rebootstrap",
-            client.getBinlogFilename, client.getBinlogPosition
-          )
-          shouldReconnect = false
-          disconnectAndExit()
-        } else {
-          Log.warn("Communication failure", e)
+        e match {
+          case serverException: ServerException =>
+            // Could not find first log file name in binary log index file
+            if (serverException.getErrorCode == 1236) {
+              Log.error(
+                "Binlog {}/{} is no longer available on the master; need to rebootstrap",
+                client.getBinlogFilename, client.getBinlogPosition
+              )
+              shouldReconnect = false
+              disconnectAndExit()
+            } else {
+              Log.warn("Communication failure", e)
+            }
+
+          case _ =>
+            Log.warn("Communication failure", e)
         }
       }
 
