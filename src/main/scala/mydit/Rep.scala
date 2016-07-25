@@ -1,6 +1,5 @@
 package mydit
 
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 import scala.collection.mutable.Queue

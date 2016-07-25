@@ -180,7 +180,7 @@ class MySQLExtractor(
 
     synchronized {
       for (listener <- listeners) {
-        listener.onEvent(new RepEvent.BinlogRotate(filename, position))
+        listener.onEvent(RepEvent.BinlogRotate(filename, position))
       }
     }
   }
@@ -212,7 +212,7 @@ class MySQLExtractor(
 
     if (doesDbNeedRep(ti, np)) synchronized {
       for (listener <- listeners) {
-        listener.onEvent(new RepEvent.Insert(np, ti.get, data))
+        listener.onEvent(RepEvent.Insert(np, ti.get, data))
       }
     }
   }
@@ -224,7 +224,7 @@ class MySQLExtractor(
 
     if (doesDbNeedRep(ti, np)) synchronized {
       for (listener <- listeners) {
-        listener.onEvent(new RepEvent.Update(np, ti.get, data))
+        listener.onEvent(RepEvent.Update(np, ti.get, data))
       }
     }
   }
@@ -236,7 +236,7 @@ class MySQLExtractor(
 
     if (doesDbNeedRep(ti, np)) synchronized {
       for (listener <- listeners) {
-        listener.onEvent(new RepEvent.Remove(np, ti.get, data))
+        listener.onEvent(RepEvent.Remove(np, ti.get, data))
       }
     }
   }
@@ -247,7 +247,7 @@ class MySQLExtractor(
 
     synchronized {
       for (listener <- listeners) {
-        listener.onEvent(new RepEvent.BinlogNextPosition(nextPosition))
+        listener.onEvent(RepEvent.BinlogNextPosition(nextPosition))
       }
     }
     false

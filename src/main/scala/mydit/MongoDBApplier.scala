@@ -94,7 +94,7 @@ class MongoDBApplier(uri: String, binlogDb: String, binlogCollName: String, enum
 
   private def mySQLRowToMongoDBObject(cols: Seq[ColInfo], includedColumns: BitSet, mySQLValues: Array[Serializable]): DBObject = {
     val ret = new BasicDBObject
-    for (i <- 0 until cols.size) {
+    for (i <- cols.indices) {
       if (includedColumns.get(i)) {
         val ci           = cols(i)
         val mongoDBValue = mySQLValueToMongoDBValue(ci, mySQLValues(i))
@@ -123,6 +123,6 @@ class MongoDBApplier(uri: String, binlogDb: String, binlogCollName: String, enum
       return new String(bytes, "UTF-8")
     }
 
-    return value
+    value
   }
 }
